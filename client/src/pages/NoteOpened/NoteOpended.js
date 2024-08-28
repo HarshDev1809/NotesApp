@@ -5,6 +5,7 @@ import Loader from "../../Components/Loader/Loader";
 import { deleteNoteId, getNoteById } from "../../api/notes/notes.api";
 import "./NoteOpened.css";
 import Footer from "../../Components/Footer/Footer";
+import Swal from "sweetalert2";
 
 function NoteOpened() {
   const navigate = useNavigate();
@@ -27,16 +28,44 @@ function NoteOpened() {
   };
 
   const deleteNote = async () => {
-    if (window.confirm("Delete Note ?")) {
-      await deleteNoteId(id);
-      navigate("/home");
-    }
+    // if (window.confirm("Delete Note ?")) {
+    //   await deleteNoteId(id);
+    //   navigate("/home");
+    // }
+    Swal.fire({
+      icon: "warning",
+      title: "Are you sure?",
+      text: "You are about to delete this note.",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      confirmButtonColor: "#f00",
+      cancelButtonColor: "#0f0",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteNoteId(id);
+        navigate("/home");
+      }
+    });
   };
 
   const editNote = () => {
-    if (window.confirm("Edit Note ?")) {
-      navigate(`/note/edit/${id}`);
-    }
+    // if (window.confirm("Edit Note ?")) {
+    //   navigate(`/note/edit/${id}`);
+    // }
+    Swal.fire({
+      icon: "question",
+      title: "Edit Note ?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      confirmButtonColor: "#f00",
+      cancelButtonColor: "#0f0",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(`/note/edit/${id}`);
+      }
+    });
   };
 
   function showNotes() {

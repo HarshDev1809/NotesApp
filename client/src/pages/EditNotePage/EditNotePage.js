@@ -6,6 +6,7 @@ import Loader from "../../Components/Loader/Loader";
 import { inputDate , outputDate} from "../../Modules/date";
 import "./EditNotePage.css"
 import Footer from "../../Components/Footer/Footer";
+import Swal from "sweetalert2";
 const {todayDateString, todayDate} = require("../../Modules/date");
 
 function EditNotePage() {
@@ -33,9 +34,23 @@ function EditNotePage() {
   };
 
   const cancelChanges = () => {
-    if(window.confirm("Cancel Changes ?")){
+    // if(window.confirm("Cancel Changes ?")){
+    //     navigate(`/note/${id}`);
+    // }
+    Swal.fire({
+      icon: "warning",
+      title: "Are you sure?",
+      text: "You are about to cancel changes.",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      confirmButtonColor: "#f00",
+      cancelButtonColor: "#0f0",
+    }).then((result) => {
+      if (result.isConfirmed) {
         navigate(`/note/${id}`);
-    }
+      }
+    });
   };
 
   function reverseDate(s){
@@ -46,14 +61,32 @@ function EditNotePage() {
 
   const saveChanges = async (e) =>{
     e.preventDefault()
-    if(window.confirm("Save Changes ?")){
+    // if(window.confirm("Save Changes ?")){
+    //     const date = outputDate(noteDate);
+    //     // setNoteDate(date)
+    //     console.log(date);
+    //     console.log(noteDetails)    
+    //     await updateNote(id,noteDetails);
+    //     navigate("/home");
+    // }
+    Swal.fire({
+      icon: "question",
+      title: "Save Changes ?",
+      text: "Are you sure you want to save changes?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      confirmButtonColor: "#f00",
+      cancelButtonColor: "#0f0",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
         const date = outputDate(noteDate);
         // setNoteDate(date)
         console.log(date);
-        console.log(noteDetails)    
-        await updateNote(id,noteDetails);
+        await updateNote(id, noteDetails);
         navigate("/home");
-    }
+      }
+    });
   }
 
   const changeDate =  (e) =>{
